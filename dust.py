@@ -30,7 +30,7 @@ def calc_density(vo, k=0.5):
     return density
 
 
-def main(sample_size=100):
+def monitor(sample_size=100, callback=None):
     vals = []
     while True:
         try:
@@ -44,15 +44,18 @@ def main(sample_size=100):
                 avg = sum(vals) / len(vals)
                 volt = calc_volt(avg)
                 density = calc_density(volt)
+                mv = volt * 1000
                 print(
                     "{mv} mV / {density} ug/m3 (Voc={voc}) | Max: {max_} ug/m3".format(  # noqa
-                        mv=(volt * 1000),
+                        mv=mv,
                         density=density,
                         voc=VOC,
                         max_=MAX,
                     )
                 )
                 vals = []
+                if callback:
+                    callback(density)
         except KeyboardInterrupt:
             break
         except Exception:
