@@ -1,13 +1,19 @@
 import os
 
 import machine
+import ubinascii
 
 os_uname = os.uname()
+uri = "homeassistant/sensor/dust"
+acty_t = uri + "/avail"
+stat_t = uri + "/state"
+conf = uri + "/config"
+
 
 config = {
     "name": "SharpDustSensor",
-    "avty_t": "homeassistant/sensor/dust/avail",
-    "stat_t": "homeassistant/sensor/dust/state",
+    "avty_t": acty_t,
+    "stat_t": stat_t,
     "pl_avail": "online",
     "pl_not_avail": "offline",
     "ic": "mdi:grain",
@@ -19,7 +25,7 @@ config = {
         "mf": "Sharp",
         "name": "SharpDustSensorv2",
         "ids": [
-            machine.unique_id(),
+            ubinascii.hexlify(machine.unique_id()).decode(),
         ],
         "sw": "%s-%s (MicroPython)" % (os_uname.nodename, os_uname.version),
     },

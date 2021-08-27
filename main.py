@@ -1,27 +1,20 @@
 from dust import monitor
 from mqtt import build_mqtt_connection
 from ha import config
+from display import Display
 
-from TM74HC595 import TM74HC595Controller
-
-
-display = TM74HC595Controller(
-    sclk=0,  # D3
-    rclk=4,  # D2
-    dio=5,  # D1
-    num_displays=4,
-)
 
 mq = build_mqtt_connection()
+dp = Display()
 
 
 def callback(density):
     if density == 0:
-        seq = "----"
+        seq = "0.0"
     else:
-        seq = str(density)[:5]
-    display.show_sequence(seq, redraw=100)
-    mq.client.publish(config["stat_t"], str(density))
+        seq = str(round(density, 1))
+    dp(seq)
+    mq.client.publish(config["stat_t"].encode(), seq.encode())
 
 
 if __name__ == "__main__":
