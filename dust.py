@@ -2,8 +2,8 @@ import machine
 from time import sleep
 
 # pin setup
-LED_PIN = machine.Pin(16, machine.Pin.OUT)  # D0
-VO_PIN = machine.ADC(0)  # A0
+LED_PIN = machine.Pin(22, machine.Pin.OUT)
+VO_PIN = machine.ADC(2)  # Pin 28
 
 # constants
 SAMPLING_TIME = 0.00028
@@ -14,7 +14,7 @@ MAX = 0
 
 
 def calc_volt(val):
-    return val * 3.3 / 1024
+    return val * 5 / 65535
 
 
 def calc_density(vo, k=0.5):
@@ -36,7 +36,7 @@ def monitor(sample_size=100, callback=None):
         try:
             LED_PIN.value(0)
             sleep(SAMPLING_TIME)
-            vals.append(VO_PIN.read())
+            vals.append(VO_PIN.read_u16())
             sleep(DELTA_TIME)
             LED_PIN.value(1)
             sleep(SLEEP_TIME)

@@ -1,10 +1,10 @@
 from dust import monitor
-from mqtt import build_mqtt_connection
-from ha import config
+# from mqtt import build_mqtt_connection
+# from ha import config
 from display import Display
 
 
-mq = build_mqtt_connection()
+# mq = build_mqtt_connection()
 dp = Display()
 
 
@@ -14,7 +14,7 @@ def callback(density):
     else:
         seq = str(round(density, 1))
     dp(seq)
-    mq.client.publish(config["stat_t"].encode(), seq.encode())
+    # mq.client.publish(config["stat_t"].encode(), seq.encode())
 
 
 if __name__ == "__main__":

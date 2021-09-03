@@ -5,9 +5,9 @@ class Display:
 
     def __init__(self):
         self.display = TM74HC595Controller(
-            sclk=0,  # D3
-            rclk=4,  # D2
-            dio=5,  # D1
+            sclk=6,
+            rclk=7,
+            dio=10,
             num_displays=4,
         )
 
