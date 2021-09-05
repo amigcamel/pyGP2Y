@@ -1,14 +1,13 @@
 import machine
-from time import sleep
+import time
 
 # pin setup
 LED_PIN = machine.Pin(22, machine.Pin.OUT)
 VO_PIN = machine.ADC(2)  # Pin 28
 
 # constants
-SAMPLING_TIME = 0.00028
-DELTA_TIME = 0.00004
-SLEEP_TIME = 0.00968
+SAMPLING_TIME = 280
+SLEEP_TIME = 10000 - SAMPLING_TIME
 VOC = 0.6
 MAX = 0
 
@@ -31,17 +30,20 @@ def calc_density(vo, k=0.5):
 
 
 def monitor(sample_size=100, callback=None):
-    vals = []
+    counter = 0
+    val = 0
     while True:
         try:
             LED_PIN.value(0)
-            sleep(SAMPLING_TIME)
-            vals.append(VO_PIN.read_u16())
-            sleep(DELTA_TIME)
+            time.sleep_us(SAMPLING_TIME)
+            t1 = time.ticks_us()
+            val += VO_PIN.read_u16()
+            counter += 1
+            t2 = time.ticks_us()
             LED_PIN.value(1)
-            sleep(SLEEP_TIME)
-            if len(vals) == sample_size:
-                avg = sum(vals) / len(vals)
+            time.sleep_us(SLEEP_TIME - (t2 - t1))
+            if counter == sample_size:
+                avg = val / sample_size
                 volt = calc_volt(avg)
                 density = calc_density(volt)
                 mv = volt * 1000
@@ -53,7 +55,8 @@ def monitor(sample_size=100, callback=None):
                         max_=MAX,
                     )
                 )
-                vals = []
+                val = 0
+                counter = 0
                 if callback:
                     callback(density)
         except KeyboardInterrupt:
