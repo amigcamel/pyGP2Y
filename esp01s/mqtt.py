@@ -1,7 +1,7 @@
 import json
 
 try:
-    from umqtt.robust import MQTTClient
+    from umqtt.simple import MQTTClient
 except ImportError:
     import upip
 
