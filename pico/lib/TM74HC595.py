@@ -81,10 +81,13 @@ class TM74HC595Controller:
                 to_display.append(self._CHARS[c])
             i += 1
 
+        import gc
         for _ in range(redraw):
             for i, c in enumerate(to_display):
                 i = self.num_displays - 1 - i
                 self._set_port(c, 1<<i)
+                gc.collect()
+            gc.collect()
 
         if clear:
             self.clear()

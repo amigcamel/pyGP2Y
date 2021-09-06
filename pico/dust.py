@@ -46,15 +46,15 @@ def monitor(sample_size=100, callback=None):
                 avg = val / sample_size
                 volt = calc_volt(avg)
                 density = calc_density(volt)
-                mv = volt * 1000
-                print(
-                    "{mv} mV / {density} ug/m3 (Voc={voc}) | Max: {max_} ug/m3".format(  # noqa
-                        mv=mv,
-                        density=density,
-                        voc=VOC,
-                        max_=MAX,
-                    )
-                )
+                # mv = volt * 1000
+                # print(
+                #     "{mv} mV / {density} ug/m3 (Voc={voc}) | Max: {max_} ug/m3".format(  # noqa
+                #         mv=mv,
+                #         density=density,
+                #         voc=VOC,
+                #         max_=MAX,
+                #     )
+                # )
                 val = 0
                 counter = 0
                 if callback:

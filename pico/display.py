@@ -13,7 +13,8 @@ class Display:
 
     def __call__(self, seq, redraw=100):
         start_at = self.calc_start_at(seq)
-        self.display.show_sequence(seq, redraw=redraw, start_at=start_at)
+        # self.display.show_sequence(seq, redraw=redraw, start_at=start_at)
+        self.display.show_sequence(seq, redraw=redraw)
 
     def calc_start_at(self, seq):
         return self.display.num_displays - len(seq.replace(".", ""))
